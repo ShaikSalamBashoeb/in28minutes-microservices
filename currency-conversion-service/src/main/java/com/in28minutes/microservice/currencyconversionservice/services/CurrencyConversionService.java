@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.in28minutes.microservice.currencyconversionservice.beans.CurrencyConversion;
+import com.in28minutes.microservice.currencyconversionservice.proxies.CurrencyExchangeProxy;
 
 @Service
 public class CurrencyConversionService {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private CurrencyExchangeProxy currencyExchangeProxy;
 	
 	public CurrencyConversion retrieveCurrencyExchange(String from, String to) {
 		
@@ -34,6 +38,14 @@ public class CurrencyConversionService {
 		 * .accept(MediaType.APPLICATION_JSON); restTemplate.exchange(accept,
 		 * CurrencyExchange.class);
 		 */
+	}
+	
+public CurrencyConversion retrieveCurrencyExchangeFeign(String from, String to) {
+		
+		CurrencyConversion currencyConversion = currencyExchangeProxy.retrieveCurrencyExchangeFeign(from, to);
+		
+		return currencyConversion;
+		
 	}
 
 }

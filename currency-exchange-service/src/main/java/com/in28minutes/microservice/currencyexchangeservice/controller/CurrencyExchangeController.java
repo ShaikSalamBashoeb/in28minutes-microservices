@@ -1,7 +1,5 @@
 package com.in28minutes.microservice.currencyexchangeservice.controller;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +23,15 @@ public class CurrencyExchangeController {
 	CurrencyExchange retrieveCurrencyExchange(@PathVariable String from, @PathVariable String to) {
 		
 		CurrencyExchange currencyExchange = currencyExchangeService.getCurrencyExchange(from, to);
-//		new CurrencyExchange(1L, from, to, new BigDecimal(65.0));
+		currencyExchange.setEnvironment(environment.getProperty("local.server.port"));
+		return currencyExchange;
+		
+	}
+	
+	@GetMapping("/currency-exchange-feign/from/{from}/to/{to}")
+	CurrencyExchange retrieveCurrencyExchangeFeign(@PathVariable String from, @PathVariable String to) {
+		
+		CurrencyExchange currencyExchange = currencyExchangeService.getCurrencyExchange(from, to);
 		currencyExchange.setEnvironment(environment.getProperty("local.server.port"));
 		return currencyExchange;
 		

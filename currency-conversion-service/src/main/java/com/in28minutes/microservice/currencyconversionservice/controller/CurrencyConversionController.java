@@ -28,4 +28,17 @@ public class CurrencyConversionController {
 		
 		return currencyConversion2;
 	}
+	
+	@GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+	public CurrencyConversion calculateCurrencyConversionFeign(@PathVariable String from, @PathVariable String to,
+			@PathVariable String quantity) {
+
+		CurrencyConversion currencyConversion = currencyConversionService.retrieveCurrencyExchangeFeign(from, to);
+		
+		CurrencyConversion currencyConversion2 = new CurrencyConversion(currencyConversion.getId(), from, to, currencyConversion.getConversionMultiple(), new BigDecimal(quantity));
+		currencyConversion2.setTotalCalculatedAmount(currencyConversion2.getQuantity().multiply(currencyConversion.getConversionMultiple()));
+		currencyConversion2.setEnvironment(currencyConversion.getEnvironment() + " Feign");
+		
+		return currencyConversion2;
+	}
 }
